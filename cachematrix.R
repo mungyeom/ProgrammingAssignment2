@@ -1,33 +1,38 @@
-## Write a short comment describing this function
+## These functions written in partial fulfillment of Coursera Data Science: R Programming 
+
+## Week 3 Assignment; week beginning Aug 5, 2018; GitHub user: MunGyeom KIM
 
 
 
 
-## This function creates a special "matrix" object that can cache its inverse.
+## This function creates a special "matrix" object that can cache its inverse
 
-## it supports setting matrix, getting matrix, setting inverse and getting
 
-## inverse
 
-makeCacheMatrix <- function(x = matrix()) {
 
-	inv <- NULL
+makeCacheMatrix <- function(x = matrix()) { ## define the argument with default mode of "matrix"
 
-	set <- function(y) {
+    inv <- NULL                             ## initialize inv as NULL; will hold value of matrix inverse 
 
-		x <<- y
+    set <- function(y) {                    ## define the set function to assign new 
 
-		inv <<- NULL
+        x <<- y                             ## value of matrix in parent environment
 
-	}
+        inv <<- NULL                        ## if there is a new matrix, reset inv to NULL
 
-	get <- function() x
+    }
 
-	setinv <- function(invers) inv <<- invers
+    get <- function() x                     ## define the get fucntion - returns value of the matrix argument
 
-	getinv <- function() inv
+    
 
-	list(set = set, get = get, setinv = setinv, getinv = getinv)
+    setinverse <- function(inverse) inv <<- inverse  ## assigns value of inv in parent environment
+
+    getinverse <- function() inv                     ## gets the value of inv where called
+
+    list(set = set, get = get, setinverse = setinverse, getinverse = getinverse)  ## you need this in order to refer 
+
+                                                                                  ## to the functions with the $ operator
 
 }
 
@@ -37,37 +42,35 @@ makeCacheMatrix <- function(x = matrix()) {
 
 
 
-## This function computes the inverse of the special "matrix" 
+## This function computes the inverse of the special "matrix" returned by makeCacheMatrix above.
 
-## returned by makeCacheMatrix above. If the inverse has already
+## If the inverse has already been calculated (and the matrix has not changed),
 
-## been calculated (and the matrix has not changed), then the
-
-## cachesolve will retrieve the inverse from the cache.
+## then cacheSolve will retrieve the inverse from the cache
 
 
 
 
 cacheSolve <- function(x, ...) {
 
-    ## Return a matrix that is the inverse of 'x'
+        ## Return a matrix that is the inverse of 'x'
 
-	inv <- x$getinv()
+    inv <- x$getinverse()
 
-	if(!is.null(inv)) {
+    if(!is.null(inv)) {
 
-		message("getting cached data")
+        message("getting cached data")
 
-		return(inv)
+        return(inv)
 
-	}
+    }
 
-	data <- x$get()
+    data <- x$get()
 
-	inv <- solve(data)
+    inv <- solve(data, ...)
 
-	x$setinv(inv)
+    x$setinverse(inv)
 
-	inv
+    inv
 
 }
